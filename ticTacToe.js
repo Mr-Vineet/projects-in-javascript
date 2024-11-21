@@ -15,15 +15,15 @@ const CIRCLE = "⭕";
 const CROSS = "❌";
 const SPACES = "  ";
 
-let pos1 = "  ";
-let pos2 = "  ";
-let pos3 = "  ";
-let pos4 = "  ";
-let pos5 = "  ";
-let pos6 = "  ";
-let pos7 = "  ";
-let pos8 = "  ";
-let pos9 = "  ";
+let pos1 = SPACES;
+let pos2 = SPACES;
+let pos3 = SPACES;
+let pos4 = SPACES;
+let pos5 = SPACES;
+let pos6 = SPACES;
+let pos7 = SPACES;
+let pos8 = SPACES;
+let pos9 = SPACES;
 
 let movesDone = 0;
 
@@ -43,63 +43,63 @@ function replaceGrid(userInput, userSign, player1, player2) {
     case "a1":
       if (pos1 === SPACES) {
         pos1 = userSign;
-        movesDone + 1;
+        ++movesDone;
         return getFrame();
       }
       break;
     case "a2":
       if (pos2 === SPACES) {
         pos2 = userSign;
-        movesDone + 1;
+        ++movesDone;
         return getFrame();
       }
       break;
     case "a3":
       if (pos3 === SPACES) {
         pos3 = userSign;
-        movesDone + 1;
+        ++movesDone;
         return getFrame();
       }
       break;
     case "b1":
       if (pos4 === SPACES) {
         pos4 = userSign;
-        movesDone + 1;
+        ++movesDone;
         return getFrame();
       }
       break;
     case "b2":
       if (pos5 === SPACES) {
         pos5 = userSign;
-        movesDone + 1;
+        ++movesDone;
         return getFrame();
       }
       break;
     case "b3":
       if (pos6 === SPACES) {
         pos6 = userSign;
-        movesDone + 1;
+        ++movesDone;
         return getFrame();
       }
       break;
     case "c1":
       if (pos7 === SPACES) {
         pos7 = userSign;
-        movesDone + 1;
+        ++movesDone;
         return getFrame();
       }
       break;
     case "c2":
       if (pos8 === SPACES) {
         pos8 = userSign;
-        movesDone + 1;
+        ++movesDone;
         return getFrame();
       }
       break;
     case "c3":
       if (pos9 === SPACES) {
         pos9 = userSign;
-        movesDone + 1;
+        ++movesDone;
         return getFrame();
       }
   }
@@ -150,11 +150,6 @@ function messageForWinner(playerName) {
 }
 
 function player2Input(player1, player2) {
-  if (movesDone > 9) {
-    console.log("OOPs It's a Draw ");
-    return;
-  }
-
   const player2Ip = prompt(player2 + " enter the place you want to put ❌ :");
 
   console.clear();
@@ -162,39 +157,42 @@ function player2Input(player1, player2) {
 
   const isPlayer2TheWinner = verifyWinningChances(CROSS);
 
-  if (isPlayer2TheWinner) {
-    console.log("🎉🎉 Congratulations!!! 🎉🎉,", player2, "you have Won The Match 👑👑👑\n");
+  return isPlayer2TheWinner;
 
-    return isPlayer2TheWinner;
-  }
-
-  player1Input(player1, player2);
+  // player1Input(player1, player2);
 }
 
 function player1Input(player1, player2) {
-  if (movesDone > 9) {
-    console.log("OOPs It's a Draw ");
-    return;
-  }
+  // if (movesDone === 9) {// change -> === 9
+  //   console.log("OOPs It's a Draw ");
+  //   return;
+  // }
 
   const player1Ip = prompt(player1 + " enter the place you want to put ⭕ :");
 
   console.clear();
   replaceGrid(player1Ip, CIRCLE, player1, player2);
-
+  // console.log(movesDone);
   const isPlayer1TheWinner = verifyWinningChances(CIRCLE);
 
-  if (isPlayer1TheWinner) {
-    console.log("🎉🎉 Congratulations!!! 🎉🎉,", player1, "you have Won The Match 👑👑👑\n");
+  return isPlayer1TheWinner;
 
-    return isPlayer1TheWinner;
-  }
-
-  player2Input(player1, player2);
+  // player2Input(player1, player2);
 }
 
-function startTheGame() {
+function startTheGame(player1, player2) {
+  if (player1Input(player1, player2)) {
+    return "🎉🎉 Congratulations!!! 🎉🎉 " + player1 + ", you have Won The Match 👑👑👑\n";
+  }
+  if (movesDone === 9) {// change -> === 9
+    return "OOPs It's a Draw ";
+  }
+  // if (isPlayer1TheWinner)
+  if (player2Input(player1, player2)) {
+    return "🎉🎉 Congratulations!!! 🎉🎉 " + player2 + ", you have Won The Match 👑👑👑\n";
+  }
 
+  return startTheGame(player1, player2);
 }
 
 const askToPlay = confirm("Would You Like To Play Tic Tac Toe❓❓❓");
@@ -208,8 +206,8 @@ if (askToPlay) {
   getFrame();
 
   console.log("[ a1 ] 👈🏻 Use This Format To Enter Positions Of Your Signs\n");
-  // startTheGame(player1, player2);
-  player1Input(player1, player2);
+  console.log(startTheGame(player1, player2));
+  // player1Input(player1, player2);
 } else {
   console.log("\n🙏🙏 Thank You For Your Time... 🙏🙏\n ");
 }
